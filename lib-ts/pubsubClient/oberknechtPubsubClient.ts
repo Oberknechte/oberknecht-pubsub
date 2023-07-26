@@ -27,7 +27,7 @@ export class oberknechtPubsubClient {
 
   constructor(options: oberknechtPubsubClientOptions) {
     addKeysToObject(i.clientData, [this.symbol, "_options"], options ?? {});
-    this.emitter = new oberknechtEmitter(options.emitterOptions);
+    // this.emitter = new oberknechtEmitter(options.emitterOptions);
     addKeysToObject(i.oberknechtEmitters, [this.symbol], this.emitter);
   }
 
