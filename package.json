@@ -1,0 +1,29 @@
+{
+  "name": "oberknecht-pubsub",
+  "version": "0.0.1",
+  "description": "",
+  "main": "export",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc && node ../makedynamic/index.js ../oberknecht-pubsub/lib-js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Oberknechte/oberknecht-pubsub.git"
+  },
+  "author": "jubewe",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Oberknechte/oberknecht-pubsub/issues"
+  },
+  "homepage": "https://github.com/Oberknechte/oberknecht-pubsub#readme",
+  "devDependencies": {
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "oberknecht-emitters": "^1.0.6",
+    "oberknecht-utils": "^1.4.7",
+    "reconnecting-websocket": "^4.4.0",
+    "ws": "^8.13.0"
+  }
+}
