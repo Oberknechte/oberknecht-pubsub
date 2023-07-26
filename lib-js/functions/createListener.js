@@ -8,8 +8,16 @@ let sendToWs_1 = require("./sendToWs");
 async function createListener(sym, topic, callback) {
     return new Promise(async (resolve, reject) => {
         let wsSym = (0, oberknecht_utils_1.getKeyFromObject)(__1.i.webSocketData, [sym, "wsSym"]);
+        let wsTopics = [];
+        if (wsSym)
+            wsTopics = (0, oberknecht_utils_1.getKeyFromObject)(__1.i.webSocketData, [
+                sym,
+                "websockets",
+                wsSym,
+                "topics",
+            ]);
         // check if subscriptions are maxed
-        if (!wsSym)
+        if (!wsSym || wsTopics.length >= 50)
             wsSym = await (0, createWs_1.createWs)(sym);
         (0, sendToWs_1.sendToWs)(sym, wsSym, {
             type: "LISTEN",
@@ -20,6 +28,9 @@ async function createListener(sym, topic, callback) {
         })
             .then((response) => {
             let topics = [`ws:message:topic:${topic}`];
+            (0, oberknecht_utils_1.addAppendKeysToObject)(__1.i.webSocketData, [sym, "websockets", wsSym, "topics"], topics);
+            (0, oberknecht_utils_1.addAppendKeysToObject)(__1.i.webSocketData, [sym, "topics"], [[wsSym, topics]]);
+            console.log(__1.i.webSocketData[sym]);
             resolve({
                 response: response,
                 topics: topics,

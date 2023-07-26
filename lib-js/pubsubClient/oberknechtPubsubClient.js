@@ -20,7 +20,6 @@ class oberknechtPubsubClient {
         (0, oberknecht_utils_1.addKeysToObject)(__1.i.clientData, [this.symbol, "_options"], options ?? {});
         this.emitter = new oberknecht_emitters_1.oberknechtEmitter(options.emitterOptions);
         (0, oberknecht_utils_1.addKeysToObject)(__1.i.oberknechtEmitters, [this.symbol], this.emitter);
-        console.log(this.emitter);
     }
     async createListener(topic, callback) {
         return (0, createListener_1.createListener)(this.symbol, topic, callback);

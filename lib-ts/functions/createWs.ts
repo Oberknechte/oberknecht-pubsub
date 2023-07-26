@@ -18,6 +18,10 @@ export async function createWs(sym: oberknechtPubsubClientSym) {
   return new Promise((resolve, reject) => {
     addAppendKeysToObject(i.webSocketData, [sym, "wsNum"], 1);
     const wsSym = getKeyFromObject(i.webSocketData, [sym, "wsNum"]);
+    addKeysToObject(i.webSocketData, [sym, "websockets", wsSym], {
+      topics: [],
+    });
+
     let ws = new reconnectingWebSocket(wsAddress, [], { WebSocket: WebSocket });
     addKeysToObject(i.webSockets, [sym, wsSym], ws);
 

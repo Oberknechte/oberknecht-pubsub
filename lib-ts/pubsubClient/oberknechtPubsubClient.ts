@@ -29,8 +29,6 @@ export class oberknechtPubsubClient {
     addKeysToObject(i.clientData, [this.symbol, "_options"], options ?? {});
     this.emitter = new oberknechtEmitter(options.emitterOptions);
     addKeysToObject(i.oberknechtEmitters, [this.symbol], this.emitter);
-
-    console.log(this.emitter);
   }
 
   async createListener(

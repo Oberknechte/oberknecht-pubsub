@@ -1,4 +1,4 @@
-import { getKeyFromObject } from "oberknecht-utils";
+import { addAppendKeysToObject, getKeyFromObject } from "oberknecht-utils";
 import { i } from "..";
 import { oberknechtPubsubClientSym } from "../types/oberknechtPubsubClient";
 import { createWs } from "./createWs";
@@ -14,8 +14,18 @@ export async function createListener(
 ) {
   return new Promise<createListenerCallback>(async (resolve, reject) => {
     let wsSym = getKeyFromObject(i.webSocketData, [sym, "wsSym"]);
+
+    let wsTopics = [];
+    if (wsSym)
+      wsTopics = getKeyFromObject(i.webSocketData, [
+        sym,
+        "websockets",
+        wsSym,
+        "topics",
+      ]);
+
     // check if subscriptions are maxed
-    if (!wsSym) wsSym = await createWs(sym);
+    if (!wsSym || wsTopics.length >= 50) wsSym = await createWs(sym);
 
     sendToWs(sym, wsSym, {
       type: "LISTEN",
@@ -26,6 +36,21 @@ export async function createListener(
     })
       .then((response: responseMessage) => {
         let topics = [`ws:message:topic:${topic}`];
+
+        addAppendKeysToObject(
+          i.webSocketData,
+          [sym, "websockets", wsSym, "topics"],
+          topics
+        );
+
+        addAppendKeysToObject(
+          i.webSocketData,
+          [sym, "topics"],
+          [[wsSym, topics]]
+        );
+
+        console.log(i.webSocketData[sym]);
+
         resolve({
           response: response,
           topics: topics,

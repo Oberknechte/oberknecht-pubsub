@@ -3,7 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.i = void 0;
 class i {
     static webSockets = {};
-    static webSocketData = {};
+    static webSocketData = {
+        websockets: {},
+        wsSym: 0,
+        topics: [],
+    };
     static clientData = {};
     static oberknechtEmitters = {};
 }

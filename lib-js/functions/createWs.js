@@ -15,6 +15,9 @@ async function createWs(sym) {
     return new Promise((resolve, reject) => {
         (0, oberknecht_utils_1.addAppendKeysToObject)(__1.i.webSocketData, [sym, "wsNum"], 1);
         const wsSym = (0, oberknecht_utils_1.getKeyFromObject)(__1.i.webSocketData, [sym, "wsNum"]);
+        (0, oberknecht_utils_1.addKeysToObject)(__1.i.webSocketData, [sym, "websockets", wsSym], {
+            topics: [],
+        });
         let ws = new reconnecting_websocket_1.default(oberknechtPubsubClient_1.wsAddress, [], { WebSocket: ws_1.WebSocket });
         (0, oberknecht_utils_1.addKeysToObject)(__1.i.webSockets, [sym, wsSym], ws);
         ws.onopen = () => {

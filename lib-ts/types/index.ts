@@ -4,7 +4,7 @@ import { oberknechtPubsubClientOptions } from "./oberknechtPubsubClientOptions";
 
 export type clientSymObject = Record<
   oberknechtPubsubClientSym,
-  Record<string, any>
+  any | Record<string, any>
 >;
 
 export type clientSymWebsocketObject = Record<
