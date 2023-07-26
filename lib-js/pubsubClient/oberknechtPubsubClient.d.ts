@@ -8,8 +8,8 @@ export declare class oberknechtPubsubClient {
     get _options(): oberknechtPubsubClientOptions;
     emitter: oberknechtEmitter;
     constructor(options: oberknechtPubsubClientOptions);
-    createListener(topic: string, callback?: typeof createListenerCallbackFunction): Promise<import("../types/createListener").createListenerCallback>;
-    createModactionListener(userID: string, channelID: string, callback?: typeof moderationActionCallbackFunction): Promise<import("../types/createListener").createListenerCallback>;
+    createListener(topic: string, token?: string, callback?: typeof createListenerCallbackFunction): Promise<import("../types/createListener").createListenerCallback>;
+    createModactionListener(userID: string, channelID: string, token?: string, callback?: typeof moderationActionCallbackFunction): Promise<import("../types/createListener").createListenerCallback>;
     on: (eventName: string | string[], callback: Function) => void;
     listen: (eventName: string | string[], callback: Function) => void;
     onModaction: (eventName: string, cb: typeof moderationActionCallbackFunction) => void;

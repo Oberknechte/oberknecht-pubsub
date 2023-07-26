@@ -5,9 +5,13 @@ let oberknecht_utils_1 = require("oberknecht-utils");
 let __1 = require("..");
 let createWs_1 = require("./createWs");
 let sendToWs_1 = require("./sendToWs");
-async function createListener(sym, topic, callback) {
+let creatingWSPromise;
+async function createListener(sym, topic, token_, callback) {
+    if (creatingWSPromise)
+        await creatingWSPromise;
     return new Promise(async (resolve, reject) => {
-        let wsSym = (0, oberknecht_utils_1.getKeyFromObject)(__1.i.webSocketData, [sym, "wsSym"]);
+        let wsSym = (0, oberknecht_utils_1.getKeyFromObject)(__1.i.webSocketData, [sym, "wsNum"]);
+        let token = token_ ?? __1.i.clientData[sym]._options.token;
         let wsTopics = [];
         if (wsSym)
             wsTopics = (0, oberknecht_utils_1.getKeyFromObject)(__1.i.webSocketData, [
@@ -16,21 +20,25 @@ async function createListener(sym, topic, callback) {
                 wsSym,
                 "topics",
             ]);
-        // check if subscriptions are maxed
-        if (!wsSym || wsTopics.length >= 50)
-            wsSym = await (0, createWs_1.createWs)(sym);
+        if (!wsSym || wsTopics.length >= 50) {
+            creatingWSPromise = new Promise(async (resolve2) => {
+                wsSym = await (0, createWs_1.createWs)(sym);
+                resolve2();
+                creatingWSPromise = undefined;
+            });
+            await creatingWSPromise;
+        }
         (0, sendToWs_1.sendToWs)(sym, wsSym, {
             type: "LISTEN",
             data: {
                 topics: [topic],
-                auth_token: __1.i.clientData[sym]._options.token,
+                auth_token: token,
             },
         })
             .then((response) => {
             let topics = [`ws:message:topic:${topic}`];
             (0, oberknecht_utils_1.addAppendKeysToObject)(__1.i.webSocketData, [sym, "websockets", wsSym, "topics"], topics);
             (0, oberknecht_utils_1.addAppendKeysToObject)(__1.i.webSocketData, [sym, "topics"], [[wsSym, topics]]);
-            console.log(__1.i.webSocketData[sym]);
             resolve({
                 response: response,
                 topics: topics,

@@ -6,14 +6,19 @@ import { sendToWs } from "./sendToWs";
 import { createListenerCallback } from "../types/createListener";
 import { responseMessage } from "../types/responseMessaage";
 import { createListenerCallbackFunction } from "../types";
+let creatingWSPromise;
 
 export async function createListener(
   sym: oberknechtPubsubClientSym,
   topic: string,
+  token_?: string,
   callback?: typeof createListenerCallbackFunction
 ) {
+  if (creatingWSPromise) await creatingWSPromise;
+
   return new Promise<createListenerCallback>(async (resolve, reject) => {
-    let wsSym = getKeyFromObject(i.webSocketData, [sym, "wsSym"]);
+    let wsSym = getKeyFromObject(i.webSocketData, [sym, "wsNum"]);
+    let token = token_ ?? i.clientData[sym]._options.token;
 
     let wsTopics = [];
     if (wsSym)
@@ -24,14 +29,21 @@ export async function createListener(
         "topics",
       ]);
 
-    // check if subscriptions are maxed
-    if (!wsSym || wsTopics.length >= 50) wsSym = await createWs(sym);
+    if (!wsSym || wsTopics.length >= 50) {
+      creatingWSPromise = new Promise<void>(async (resolve2) => {
+        wsSym = await createWs(sym);
+        resolve2();
+        creatingWSPromise = undefined;
+      });
+
+      await creatingWSPromise;
+    }
 
     sendToWs(sym, wsSym, {
       type: "LISTEN",
       data: {
         topics: [topic],
-        auth_token: i.clientData[sym]._options.token,
+        auth_token: token,
       },
     })
       .then((response: responseMessage) => {
@@ -48,8 +60,6 @@ export async function createListener(
           [sym, "topics"],
           [[wsSym, topics]]
         );
-
-        console.log(i.webSocketData[sym]);
 
         resolve({
           response: response,

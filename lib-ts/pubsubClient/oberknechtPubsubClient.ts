@@ -33,19 +33,22 @@ export class oberknechtPubsubClient {
 
   async createListener(
     topic: string,
+    token?: string,
     callback?: typeof createListenerCallbackFunction
   ) {
-    return createListener(this.symbol, topic, callback);
+    return createListener(this.symbol, topic, token, callback);
   }
 
   async createModactionListener(
     userID: string,
     channelID: string,
+    token?: string,
     callback?: typeof moderationActionCallbackFunction
   ) {
     return createListener(
       this.symbol,
       `chat_moderator_actions.${userID}.${channelID}`,
+      token,
       callback
     );
   }

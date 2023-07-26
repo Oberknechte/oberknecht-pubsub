@@ -12,9 +12,9 @@ const reconnecting_websocket_1 = __importDefault(require("reconnecting-websocket
 const message_1 = require("../parser/message");
 const sendToWs_1 = require("./sendToWs");
 async function createWs(sym) {
+    (0, oberknecht_utils_1.addAppendKeysToObject)(__1.i.webSocketData, [sym, "wsNum"], 1);
+    const wsSym = (0, oberknecht_utils_1.getKeyFromObject)(__1.i.webSocketData, [sym, "wsNum"]);
     return new Promise((resolve, reject) => {
-        (0, oberknecht_utils_1.addAppendKeysToObject)(__1.i.webSocketData, [sym, "wsNum"], 1);
-        const wsSym = (0, oberknecht_utils_1.getKeyFromObject)(__1.i.webSocketData, [sym, "wsNum"]);
         (0, oberknecht_utils_1.addKeysToObject)(__1.i.webSocketData, [sym, "websockets", wsSym], {
             topics: [],
         });
@@ -36,7 +36,7 @@ async function createWs(sym) {
             // ws.reconnect();
         };
         function heartbeat() {
-            (0, oberknecht_utils_1.addKeysToObject)(__1.i.webSocketData, [sym, wsSym, "heartbeat", "interval"], setInterval(() => {
+            (0, oberknecht_utils_1.addKeysToObject)(__1.i.webSocketData, [sym, "websockets", wsSym, "heartbeat", "interval"], setInterval(() => {
                 (0, sendToWs_1.sendToWs)(sym, wsSym, { type: "PING" });
             }, oberknechtPubsubClient_1.heartbeatInterval));
         }

@@ -15,14 +15,16 @@ import { messageHandler } from "../parser/message";
 import { sendToWs } from "./sendToWs";
 
 export async function createWs(sym: oberknechtPubsubClientSym) {
+  addAppendKeysToObject(i.webSocketData, [sym, "wsNum"], 1);
+  const wsSym = getKeyFromObject(i.webSocketData, [sym, "wsNum"]);
+
   return new Promise((resolve, reject) => {
-    addAppendKeysToObject(i.webSocketData, [sym, "wsNum"], 1);
-    const wsSym = getKeyFromObject(i.webSocketData, [sym, "wsNum"]);
     addKeysToObject(i.webSocketData, [sym, "websockets", wsSym], {
       topics: [],
     });
 
     let ws = new reconnectingWebSocket(wsAddress, [], { WebSocket: WebSocket });
+
     addKeysToObject(i.webSockets, [sym, wsSym], ws);
 
     ws.onopen = () => {
@@ -47,7 +49,7 @@ export async function createWs(sym: oberknechtPubsubClientSym) {
     function heartbeat() {
       addKeysToObject(
         i.webSocketData,
-        [sym, wsSym, "heartbeat", "interval"],
+        [sym, "websockets", wsSym, "heartbeat", "interval"],
         setInterval(() => {
           sendToWs(sym, wsSym, { type: "PING" });
         }, heartbeatInterval)
