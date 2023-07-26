@@ -33,6 +33,7 @@ export function messageHandler(
 
       let parsedResponseMessage = new parsedResponseMessageClass(
         sym,
+        message.data.topic,
         responseMessage
       );
 

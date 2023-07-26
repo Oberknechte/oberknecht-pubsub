@@ -7,6 +7,7 @@ export declare class moderation_actionMessage {
     moderatorID: string;
     targetLogin: string;
     targetID: string;
+    channelID: string;
     createdAt: Date;
-    constructor(sym: oberknechtPubsubClientSym, message: Record<string, any>);
+    constructor(sym: oberknechtPubsubClientSym, topic: string, message: Record<string, any>);
 }

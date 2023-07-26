@@ -21,7 +21,7 @@ function messageHandler(sym, wsSym, messageRaw) {
             let parsedResponseMessageClass = message_types_1.messageTypes[`${responseMessage.type}Message`];
             if (!parsedResponseMessageClass)
                 return;
-            let parsedResponseMessage = new parsedResponseMessageClass(sym, responseMessage);
+            let parsedResponseMessage = new parsedResponseMessageClass(sym, message.data.topic, responseMessage);
             parsedMessage = parsedResponseMessage;
             break;
         }

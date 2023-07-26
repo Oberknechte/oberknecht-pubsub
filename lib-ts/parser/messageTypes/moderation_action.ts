@@ -12,9 +12,16 @@ export class moderation_actionMessage {
   targetLogin: string;
   targetID: string;
 
+  channelID: string;
+
   createdAt: Date;
 
-  constructor(sym: oberknechtPubsubClientSym, message: Record<string, any>) {
+  constructor(
+    sym: oberknechtPubsubClientSym,
+    topic: string,
+    // chat_moderator_actions.685382568.685382568
+    message: Record<string, any>
+  ) {
     let message_ = message.data;
 
     this.type = message_.type;
@@ -27,6 +34,8 @@ export class moderation_actionMessage {
 
     this.targetLogin = message_.target_user_login;
     this.targetID = message_.target_user_id;
+
+    this.channelID = topic.replace(/^\w+\.\d+\./, "");
 
     this.createdAt = new Date(message_.created_at);
   }

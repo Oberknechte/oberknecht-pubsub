@@ -9,8 +9,11 @@ class moderation_actionMessage {
     moderatorID;
     targetLogin;
     targetID;
+    channelID;
     createdAt;
-    constructor(sym, message) {
+    constructor(sym, topic, 
+    // chat_moderator_actions.685382568.685382568
+    message) {
         let message_ = message.data;
         this.type = message_.type;
         this.moderationAction = message_.moderation_action;
@@ -19,6 +22,7 @@ class moderation_actionMessage {
         this.moderatorID = message_.created_by_user_id;
         this.targetLogin = message_.target_user_login;
         this.targetID = message_.target_user_id;
+        this.channelID = topic.replace(/^\w+\.\d+\./, "");
         this.createdAt = new Date(message_.created_at);
     }
 }
