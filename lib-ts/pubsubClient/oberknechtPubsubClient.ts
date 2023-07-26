@@ -23,7 +23,7 @@ export class oberknechtPubsubClient {
     );
   }
 
-  emitter: oberknechtEmitter = new oberknechtEmitter;
+  emitter: oberknechtEmitter = new oberknechtEmitter();
 
   constructor(options: oberknechtPubsubClientOptions) {
     addKeysToObject(i.clientData, [this.symbol, "_options"], options ?? {});
@@ -41,10 +41,15 @@ export class oberknechtPubsubClient {
   }
 
   async createModactionListener(
-    topic: string,
+    userID: string,
+    channelID: string,
     callback?: typeof moderationActionCallbackFunction
   ) {
-    return createListener(this.symbol, topic, callback);
+    return createListener(
+      this.symbol,
+      `chat_moderator_actions.${userID}.${channelID}`,
+      callback
+    );
   }
 
   on = this.emitter.on;
@@ -56,7 +61,7 @@ export class oberknechtPubsubClient {
     this.emitter.on(eventName, cb);
   };
 
-  onModactions = (cb: typeof moderationActionCallbackFunction)=> {
-    this.emitter.on(`ws:message:type:moderation_action`, cb)
-  }
+  onModactions = (cb: typeof moderationActionCallbackFunction) => {
+    this.emitter.on(`ws:message:type:moderation_action`, cb);
+  };
 }

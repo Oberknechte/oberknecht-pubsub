@@ -5,7 +5,6 @@ let __1 = require("..");
 let message_types_1 = require("./messageTypes/message.types");
 function messageHandler(sym, wsSym, messageRaw) {
     let message = JSON.parse(messageRaw);
-    console.log("🚀 ~ file: message.ts:10 ~ message:", message);
     let parsedMessage = message;
     let cbEventNames = [
         `ws:${wsSym}:message`,

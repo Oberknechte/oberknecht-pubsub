@@ -15,7 +15,7 @@ class oberknechtPubsubClient {
         return (__1.i.clientData[this.symbol]?._options ??
             {});
     }
-    emitter = new oberknecht_emitters_1.oberknechtEmitter;
+    emitter = new oberknecht_emitters_1.oberknechtEmitter();
     constructor(options) {
         (0, oberknecht_utils_1.addKeysToObject)(__1.i.clientData, [this.symbol, "_options"], options ?? {});
         this.emitter = new oberknecht_emitters_1.oberknechtEmitter(options.emitterOptions);
@@ -25,8 +25,8 @@ class oberknechtPubsubClient {
     async createListener(topic, callback) {
         return (0, createListener_1.createListener)(this.symbol, topic, callback);
     }
-    async createModactionListener(topic, callback) {
-        return (0, createListener_1.createListener)(this.symbol, topic, callback);
+    async createModactionListener(userID, channelID, callback) {
+        return (0, createListener_1.createListener)(this.symbol, `chat_moderator_actions.${userID}.${channelID}`, callback);
     }
     on = this.emitter.on;
     listen = this.on;
