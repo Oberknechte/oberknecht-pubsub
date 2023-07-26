@@ -17,6 +17,7 @@ export async function createListener(
   if (creatingWSPromise) await creatingWSPromise;
 
   return new Promise<createListenerCallback>(async (resolve, reject) => {
+
     let wsSym = getKeyFromObject(i.webSocketData, [sym, "wsNum"]);
     let token = token_ ?? i.clientData[sym]._options.token;
 
