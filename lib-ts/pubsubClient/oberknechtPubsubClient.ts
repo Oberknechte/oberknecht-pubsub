@@ -2,12 +2,13 @@ import { oberknechtEmitter } from "oberknecht-emitters";
 import { i } from "..";
 import { oberknechtPubsubClientSym } from "../types/oberknechtPubsubClient";
 import { oberknechtPubsubClientOptions } from "../types/oberknechtPubsubClientOptions";
-import { addKeysToObject } from "oberknecht-utils";
+import { addKeysToObject, getKeyFromObject } from "oberknecht-utils";
 import { createListener } from "../functions/createListener";
 import {
   createListenerCallbackFunction,
   moderationActionCallbackFunction,
 } from "../types";
+import { removeListener } from "../functions/removeListener";
 let symNum = 0;
 
 export class oberknechtPubsubClient {
@@ -20,6 +21,12 @@ export class oberknechtPubsubClient {
     return (
       i.clientData[this.symbol]?._options ??
       ({} as oberknechtPubsubClientOptions)
+    );
+  }
+
+  get topics() {
+    return getKeyFromObject(i.webSocketData, [this.symbol, "topics"]).map(
+      (a) => a[1][0]
     );
   }
 
@@ -37,6 +44,17 @@ export class oberknechtPubsubClient {
     callback?: typeof createListenerCallbackFunction
   ) {
     return createListener(this.symbol, topic, token, callback);
+  }
+
+  async removeListener(topic: string) {
+    return removeListener(this.symbol, topic);
+  }
+
+  async removeModactionListener(userID: string, channelID: string) {
+    return removeListener(
+      this.symbol,
+      `chat_moderator_actions.${userID}.${channelID}`
+    );
   }
 
   async createModactionListener(

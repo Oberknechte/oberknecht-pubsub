@@ -36,15 +36,17 @@ async function createListener(sym, topic, token_, callback) {
             },
         })
             .then((response) => {
-            let topics = [`ws:message:topic:${topic}`];
+            let topics = [topic];
+            let topicEventNames = [`ws:message:topic:${topic}`];
             (0, oberknecht_utils_1.addAppendKeysToObject)(__1.i.webSocketData, [sym, "websockets", wsSym, "topics"], topics);
             (0, oberknecht_utils_1.addAppendKeysToObject)(__1.i.webSocketData, [sym, "topics"], [[wsSym, topics]]);
             resolve({
                 response: response,
                 topics: topics,
+                topicEventNames: topicEventNames
             });
             if (callback && typeof callback === "function")
-                __1.i.oberknechtEmitters[sym].on(topics[0], callback);
+                __1.i.oberknechtEmitters[sym].on(topicEventNames[0], callback);
         })
             .catch(reject);
     });

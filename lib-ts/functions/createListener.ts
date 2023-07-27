@@ -17,7 +17,6 @@ export async function createListener(
   if (creatingWSPromise) await creatingWSPromise;
 
   return new Promise<createListenerCallback>(async (resolve, reject) => {
-
     let wsSym = getKeyFromObject(i.webSocketData, [sym, "wsNum"]);
     let token = token_ ?? i.clientData[sym]._options.token;
 
@@ -48,7 +47,8 @@ export async function createListener(
       },
     })
       .then((response: responseMessage) => {
-        let topics = [`ws:message:topic:${topic}`];
+        let topics = [topic];
+        let topicEventNames = [`ws:message:topic:${topic}`];
 
         addAppendKeysToObject(
           i.webSocketData,
@@ -65,10 +65,11 @@ export async function createListener(
         resolve({
           response: response,
           topics: topics,
+          topicEventNames: topicEventNames
         });
 
         if (callback && typeof callback === "function")
-          i.oberknechtEmitters[sym].on(topics[0], callback);
+          i.oberknechtEmitters[sym].on(topicEventNames[0], callback);
       })
       .catch(reject);
   });
