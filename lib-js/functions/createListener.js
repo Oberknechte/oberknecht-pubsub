@@ -43,7 +43,8 @@ async function createListener(sym, topic, token_, callback) {
             resolve({
                 response: response,
                 topics: topics,
-                topicEventNames: topicEventNames
+                topicEventNames: topicEventNames,
+                wsSym: wsSym,
             });
             if (callback && typeof callback === "function")
                 __1.i.oberknechtEmitters[sym].on(topicEventNames[0], callback);

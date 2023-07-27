@@ -18,6 +18,17 @@ function removeListener(sym, topic) {
             },
         })
             .then((r) => {
+            let wsTopics = (0, oberknecht_utils_1.getKeyFromObject)(__1.i.webSocketData, [
+                sym,
+                "websockets",
+                wsSym,
+                "topics",
+            ]) ?? [];
+            let wsTopicsNew = wsTopics.filter((a) => a !== topic);
+            (0, oberknecht_utils_1.addKeysToObject)(__1.i.webSocketData, [sym, "websockets", wsSym, "topics"], wsTopicsNew);
+            let wsAllTopics = (0, oberknecht_utils_1.getKeyFromObject)(__1.i.webSocketData, [sym, "topics"]);
+            let wsAllTopicsNew = wsAllTopics.filter((a) => a[1][0] !== topic);
+            (0, oberknecht_utils_1.addKeysToObject)(__1.i.webSocketData, [sym, "topics"], wsAllTopicsNew);
             resolve({
                 response: r,
                 topics: (0, oberknecht_utils_1.convertToArray)(topic),

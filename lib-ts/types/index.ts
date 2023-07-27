@@ -1,6 +1,7 @@
 import { moderation_actionMessage } from "../parser/messageTypes/moderation_action";
 import { oberknechtPubsubClientSym } from "./oberknechtPubsubClient";
 import { oberknechtPubsubClientOptions } from "./oberknechtPubsubClientOptions";
+import WebSocket from "reconnecting-websocket";
 
 export type clientSymObject = Record<
   oberknechtPubsubClientSym,

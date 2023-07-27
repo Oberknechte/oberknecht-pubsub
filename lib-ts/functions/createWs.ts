@@ -25,7 +25,8 @@ export async function createWs(sym: oberknechtPubsubClientSym) {
 
     let ws = new reconnectingWebSocket(wsAddress, [], { WebSocket: WebSocket });
 
-    addKeysToObject(i.webSockets, [sym, wsSym], ws);
+    if (!i.webSockets[sym]) i.webSockets[sym] = {};
+    i.webSockets[sym][wsSym] = ws;
 
     ws.onopen = () => {
       i.oberknechtEmitters[sym].emit(`ws:${wsSym}:open`, "");

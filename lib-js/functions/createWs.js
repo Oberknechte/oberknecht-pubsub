@@ -4,13 +4,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createWs = void 0;
-const oberknecht_utils_1 = require("oberknecht-utils");
-const __1 = require("..");
-const oberknechtPubsubClient_1 = require("../types/oberknechtPubsubClient");
-const ws_1 = require("ws");
+let oberknecht_utils_1 = require("oberknecht-utils");
+let __1 = require("..");
+let oberknechtPubsubClient_1 = require("../types/oberknechtPubsubClient");
+let ws_1 = require("ws");
 const reconnecting_websocket_1 = __importDefault(require("reconnecting-websocket"));
-const message_1 = require("../parser/message");
-const sendToWs_1 = require("./sendToWs");
+let message_1 = require("../parser/message");
+let sendToWs_1 = require("./sendToWs");
 async function createWs(sym) {
     (0, oberknecht_utils_1.addAppendKeysToObject)(__1.i.webSocketData, [sym, "wsNum"], 1);
     const wsSym = (0, oberknecht_utils_1.getKeyFromObject)(__1.i.webSocketData, [sym, "wsNum"]);
@@ -19,7 +19,9 @@ async function createWs(sym) {
             topics: [],
         });
         let ws = new reconnecting_websocket_1.default(oberknechtPubsubClient_1.wsAddress, [], { WebSocket: ws_1.WebSocket });
-        (0, oberknecht_utils_1.addKeysToObject)(__1.i.webSockets, [sym, wsSym], ws);
+        if (!__1.i.webSockets[sym])
+            __1.i.webSockets[sym] = {};
+        __1.i.webSockets[sym][wsSym] = ws;
         ws.onopen = () => {
             __1.i.oberknechtEmitters[sym].emit(`ws:${wsSym}:open`, "");
             resolve(wsSym);

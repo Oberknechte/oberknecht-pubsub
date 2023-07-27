@@ -1,11 +1,11 @@
 {
   "name": "oberknecht-pubsub",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "",
   "main": "export",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc && node ../makedynamic/index.js ../oberknecht-pubsub/lib-js"
+    "build": "tsc && node ../../makedynamic/index.js -d ./lib-js"
   },
   "repository": {
     "type": "git",

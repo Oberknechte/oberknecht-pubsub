@@ -1,4 +1,9 @@
-import { convertToArray, getKeyFromObject } from "oberknecht-utils";
+import {
+  addKeysToObject,
+  convertToArray,
+  deleteKeyFromObject,
+  getKeyFromObject,
+} from "oberknecht-utils";
 import { oberknechtPubsubClientSym } from "../types/oberknechtPubsubClient";
 import { i } from "..";
 import { sendToWs } from "./sendToWs";
@@ -20,6 +25,27 @@ export function removeListener(sym: oberknechtPubsubClientSym, topic: string) {
       },
     })
       .then((r) => {
+        let wsTopics =
+          getKeyFromObject(i.webSocketData, [
+            sym,
+            "websockets",
+            wsSym,
+            "topics",
+          ]) ?? [];
+
+        let wsTopicsNew = wsTopics.filter((a) => a !== topic);
+
+        addKeysToObject(
+          i.webSocketData,
+          [sym, "websockets", wsSym, "topics"],
+          wsTopicsNew
+        );
+
+        let wsAllTopics = getKeyFromObject(i.webSocketData, [sym, "topics"]);
+
+        let wsAllTopicsNew = wsAllTopics.filter((a) => a[1][0] !== topic);
+        addKeysToObject(i.webSocketData, [sym, "topics"], wsAllTopicsNew);
+
         resolve({
           response: r,
           topics: convertToArray(topic),

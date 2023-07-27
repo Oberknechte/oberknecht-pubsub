@@ -65,7 +65,8 @@ export async function createListener(
         resolve({
           response: response,
           topics: topics,
-          topicEventNames: topicEventNames
+          topicEventNames: topicEventNames,
+          wsSym: wsSym,
         });
 
         if (callback && typeof callback === "function")
