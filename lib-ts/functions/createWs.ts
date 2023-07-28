@@ -57,6 +57,6 @@ export async function createWs(sym: oberknechtPubsubClientSym) {
       );
     }
 
-    // heartbeat();
+    heartbeat();
   });
 }

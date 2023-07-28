@@ -42,7 +42,7 @@ async function createWs(sym) {
                 (0, sendToWs_1.sendToWs)(sym, wsSym, { type: "PING" });
             }, oberknechtPubsubClient_1.heartbeatInterval));
         }
-        // heartbeat();
+        heartbeat();
     });
 }
 exports.createWs = createWs;
