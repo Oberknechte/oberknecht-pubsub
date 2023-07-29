@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createListener = void 0;
+exports._createListener = exports.createListener = void 0;
 let oberknecht_utils_1 = require("oberknecht-utils");
 let __1 = require("..");
 let createWs_1 = require("./createWs");
@@ -20,7 +20,7 @@ async function createListener(sym, topic, token_, callback) {
                 wsSym,
                 "topics",
             ]);
-        if (!wsSym || wsTopics.length >= 50) {
+        if (!wsSym || Object.keys(wsTopics).length >= 50) {
             creatingWSPromise = new Promise(async (resolve2) => {
                 wsSym = await (0, createWs_1.createWs)(sym);
                 resolve2();
@@ -38,8 +38,16 @@ async function createListener(sym, topic, token_, callback) {
             .then((response) => {
             let topics = [topic];
             let topicEventNames = [`ws:message:topic:${topic}`];
-            (0, oberknecht_utils_1.addAppendKeysToObject)(__1.i.webSocketData, [sym, "websockets", wsSym, "topics"], topics);
-            (0, oberknecht_utils_1.addAppendKeysToObject)(__1.i.webSocketData, [sym, "topics"], [[wsSym, topics]]);
+            topics.forEach((topic) => {
+                (0, oberknecht_utils_1.addAppendKeysToObject)(__1.i.webSocketData, [sym, "websockets", wsSym, "topics", topic], {
+                    extraArgs: [token],
+                });
+            });
+            topics.forEach((topic) => {
+                (0, oberknecht_utils_1.addAppendKeysToObject)(__1.i.webSocketData, [sym, "topics", topic], {
+                    wsSym: wsSym,
+                });
+            });
             resolve({
                 response: response,
                 topics: topics,
@@ -53,3 +61,7 @@ async function createListener(sym, topic, token_, callback) {
     });
 }
 exports.createListener = createListener;
+function _createListener() {
+    return createListener;
+}
+exports._createListener = _createListener;

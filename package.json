@@ -1,6 +1,6 @@
 {
   "name": "oberknecht-pubsub",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "main": "export",
   "scripts": {
@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "oberknecht-emitters": "^1.0.6",
-    "oberknecht-utils": "^1.4.7",
+    "oberknecht-utils": "^1.4.9",
     "reconnecting-websocket": "^4.4.0",
     "ws": "^8.13.0"
   }

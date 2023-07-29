@@ -23,11 +23,15 @@ function removeListener(sym, topic) {
                 "websockets",
                 wsSym,
                 "topics",
-            ]) ?? [];
-            let wsTopicsNew = wsTopics.filter((a) => a !== topic);
+            ]) ?? {};
+            let wsTopicsNew = Object.keys(wsTopics)
+                .filter((a) => a !== topic)
+                .map((a) => wsTopics[a]);
             (0, oberknecht_utils_1.addKeysToObject)(__1.i.webSocketData, [sym, "websockets", wsSym, "topics"], wsTopicsNew);
-            let wsAllTopics = (0, oberknecht_utils_1.getKeyFromObject)(__1.i.webSocketData, [sym, "topics"]);
-            let wsAllTopicsNew = wsAllTopics.filter((a) => a[1][0] !== topic);
+            let wsAllTopics = (0, oberknecht_utils_1.getKeyFromObject)(__1.i.webSocketData, [sym, "topics"]) ?? {};
+            let wsAllTopicsNew = Object.keys(wsAllTopics)
+                .filter((a) => a !== topic)
+                .map((a) => wsAllTopics[a]);
             (0, oberknecht_utils_1.addKeysToObject)(__1.i.webSocketData, [sym, "topics"], wsAllTopicsNew);
             resolve({
                 response: r,

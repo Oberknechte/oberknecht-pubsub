@@ -31,9 +31,11 @@ export function removeListener(sym: oberknechtPubsubClientSym, topic: string) {
             "websockets",
             wsSym,
             "topics",
-          ]) ?? [];
+          ]) ?? {};
 
-        let wsTopicsNew = wsTopics.filter((a) => a !== topic);
+        let wsTopicsNew = Object.keys(wsTopics)
+          .filter((a) => a !== topic)
+          .map((a) => wsTopics[a]);
 
         addKeysToObject(
           i.webSocketData,
@@ -41,9 +43,12 @@ export function removeListener(sym: oberknechtPubsubClientSym, topic: string) {
           wsTopicsNew
         );
 
-        let wsAllTopics = getKeyFromObject(i.webSocketData, [sym, "topics"]);
+        let wsAllTopics =
+          getKeyFromObject(i.webSocketData, [sym, "topics"]) ?? {};
 
-        let wsAllTopicsNew = wsAllTopics.filter((a) => a[1][0] !== topic);
+        let wsAllTopicsNew = Object.keys(wsAllTopics)
+          .filter((a) => a !== topic)
+          .map((a) => wsAllTopics[a]);
         addKeysToObject(i.webSocketData, [sym, "topics"], wsAllTopicsNew);
 
         resolve({

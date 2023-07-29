@@ -29,7 +29,7 @@ export async function createListener(
         "topics",
       ]);
 
-    if (!wsSym || wsTopics.length >= 50) {
+    if (!wsSym || Object.keys(wsTopics).length >= 50) {
       creatingWSPromise = new Promise<void>(async (resolve2) => {
         wsSym = await createWs(sym);
         resolve2();
@@ -50,17 +50,21 @@ export async function createListener(
         let topics = [topic];
         let topicEventNames = [`ws:message:topic:${topic}`];
 
-        addAppendKeysToObject(
-          i.webSocketData,
-          [sym, "websockets", wsSym, "topics"],
-          topics
-        );
+        topics.forEach((topic) => {
+          addAppendKeysToObject(
+            i.webSocketData,
+            [sym, "websockets", wsSym, "topics", topic],
+            {
+              extraArgs: [token],
+            }
+          );
+        });
 
-        addAppendKeysToObject(
-          i.webSocketData,
-          [sym, "topics"],
-          [[wsSym, topics]]
-        );
+        topics.forEach((topic) => {
+          addAppendKeysToObject(i.webSocketData, [sym, "topics", topic], {
+            wsSym: wsSym,
+          });
+        });
 
         resolve({
           response: response,
@@ -74,4 +78,8 @@ export async function createListener(
       })
       .catch(reject);
   });
+}
+
+export function _createListener() {
+  return createListener;
 }
