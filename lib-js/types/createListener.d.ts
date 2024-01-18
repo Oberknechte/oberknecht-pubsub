@@ -1,5 +1,5 @@
 import { responseMessage } from "./responseMessaage";
-export type createListenerCallback = {
+export declare type createListenerCallback = {
     response: responseMessage;
     topics: string[];
     topicEventNames: string[];

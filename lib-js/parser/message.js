@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.messageHandler = void 0;
-let __1 = require("..");
-let message_types_1 = require("./messageTypes/message.types");
+const __1 = require("..");
+const message_types_1 = require("./messageTypes/message.types");
 function messageHandler(sym, wsSym, messageRaw) {
     let message = JSON.parse(messageRaw);
     let parsedMessage = message;

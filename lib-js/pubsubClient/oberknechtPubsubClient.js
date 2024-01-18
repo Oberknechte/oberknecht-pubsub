@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.oberknechtPubsubClient = void 0;
-let oberknecht_emitters_1 = require("oberknecht-emitters");
-let __1 = require("..");
-let oberknecht_utils_1 = require("oberknecht-utils");
-let createListener_1 = require("../functions/createListener");
-let removeListener_1 = require("../functions/removeListener");
+const oberknecht_emitters_1 = require("oberknecht-emitters");
+const __1 = require("..");
+const oberknecht_utils_1 = require("oberknecht-utils");
+const createListener_1 = require("../functions/createListener");
+const removeListener_1 = require("../functions/removeListener");
 let symNum = 0;
 class oberknechtPubsubClient {
     #sym = `oberknechtPubsubClient-${symNum++}`;
@@ -17,7 +17,7 @@ class oberknechtPubsubClient {
             {});
     }
     get topics() {
-        return (0, oberknecht_utils_1.getKeyFromObject)(__1.i.webSocketData, [this.symbol, "topics"]).map((a) => a[1][0]);
+        return (0, oberknecht_utils_1.getKeyFromObject)(__1.i.webSocketData, [this.symbol, "topics"]);
     }
     emitter = new oberknecht_emitters_1.oberknechtEmitter();
     constructor(options) {

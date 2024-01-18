@@ -25,9 +25,7 @@ export class oberknechtPubsubClient {
   }
 
   get topics() {
-    return getKeyFromObject(i.webSocketData, [this.symbol, "topics"]).map(
-      (a) => a[1][0]
-    );
+    return getKeyFromObject(i.webSocketData, [this.symbol, "topics"])
   }
 
   emitter: oberknechtEmitter = new oberknechtEmitter();

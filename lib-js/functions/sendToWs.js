@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendToWs = void 0;
-let oberknecht_utils_1 = require("oberknecht-utils");
-let __1 = require("..");
+const oberknecht_utils_1 = require("oberknecht-utils");
+const __1 = require("..");
 function sendToWs(sym, wsSym, data) {
     return new Promise((resolve, reject) => {
         let dat = (0, oberknecht_utils_1.recreate)(data);

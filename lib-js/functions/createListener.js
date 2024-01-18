@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports._createListener = exports.createListener = void 0;
-let oberknecht_utils_1 = require("oberknecht-utils");
-let __1 = require("..");
-let createWs_1 = require("./createWs");
-let sendToWs_1 = require("./sendToWs");
+const oberknecht_utils_1 = require("oberknecht-utils");
+const __1 = require("..");
+const createWs_1 = require("./createWs");
+const sendToWs_1 = require("./sendToWs");
 let creatingWSPromise;
 async function createListener(sym, topic, token_, callback) {
     if (creatingWSPromise)
