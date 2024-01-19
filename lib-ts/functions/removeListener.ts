@@ -11,12 +11,12 @@ import { sendToWs } from "./sendToWs";
 export function removeListener(sym: oberknechtPubsubClientSym, topic: string) {
   return new Promise((resolve, reject) => {
     let topicDatas = getKeyFromObject(i.webSocketData, [sym, "topics"]) ?? [];
-    let topicData = topicDatas.filter((a) => a[1][0] === topic)[0];
+    let topicData = topicDatas?.[Object.keys(topicDatas).filter((a) => a === topic)[0]];
 
     if (!topicData)
       return reject(Error("Topic not found in subscribed topics"));
 
-    let wsSym = topicData[0];
+    let wsSym = topicData.wsSym;
 
     sendToWs(sym, wsSym, {
       type: "UNLISTEN",
